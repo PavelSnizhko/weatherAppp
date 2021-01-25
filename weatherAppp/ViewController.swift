@@ -94,7 +94,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.textLabel?.text = self.currentWeathers?[indexPath.row].cityName
         if let temperature =  self.currentWeathers?[indexPath.row].mainWeather.temp{
-            cell.detailTextLabel?.text = "\(temperature) K"
+            cell.detailTextLabel?.text = "\(temperature) ℃"
         }
     }
         

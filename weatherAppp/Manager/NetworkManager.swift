@@ -13,12 +13,18 @@ enum NetworkingErrors: String, Error {
 }
 
 
+
+
 class NetworkManager {
+    enum Units: String {
+        case standard
+        case metric
+        case imperial
+    }
     
-    let schema = "https"
-    let host = "api.openweathermap.org"
-    
-    init() { }
+    private let schema = "https"
+    private let host = "api.openweathermap.org"
+    private let unit = Units.metric
     
     
     func getCurrentWeather(by cityName: String, completion: @escaping (Result<CurrentWeather, NetworkingErrors>) -> ()) {
@@ -28,6 +34,7 @@ class NetworkManager {
         components.path = "/data/2.5/weather"
         components.queryItems = [
             URLQueryItem(name: "q", value: cityName),
+            URLQueryItem(name: "units", value: unit.rawValue),
             URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
         ]
         
@@ -52,7 +59,6 @@ class NetworkManager {
                 }
             }
             else {
-                print(error as Any)
                 DispatchQueue.main.async {
                     completion(.failure(.ServerError))
                 }
@@ -68,6 +74,7 @@ class NetworkManager {
         components.path = "/data/2.5/group"
         components.queryItems = [
             URLQueryItem(name: "id", value: citiesIdString),
+            URLQueryItem(name: "units", value: unit.rawValue),
             URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
         ]
         
@@ -95,6 +102,20 @@ class NetworkManager {
                 }
             }
         }.resume()
+        
+//        func getDailyForecast(by coord: (Float, Float), complition () - >()) {
+//            var components = URLComponents()
+//            let citiesIdString = citiesId.map{"\($0)"}.joined(separator: ",")
+//            components.scheme = self.schema
+//            components.host = self.host
+//            components.path = "/data/2.5/group"
+//            components.queryItems = [
+//                URLQueryItem(name: "id", value: citiesIdString),
+//                URLQueryItem(name: "units", value: unit.rawValue),
+//                URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
+//            ]
+//            
+//        }
     }
     
 }
