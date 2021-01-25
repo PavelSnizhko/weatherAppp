@@ -29,7 +29,7 @@ class DetailViewController: UIViewController {
     
 
     /*
-    // MARK: - Navigation
+    
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -41,6 +41,7 @@ class DetailViewController: UIViewController {
 }
 
 extension DetailViewController {
+    // MARK: - LabelConstraints
     func setLabelConstraints() {
         cityNameLabel.translatesAutoresizingMaskIntoConstraints = false
         cityNameLabel.centerXAnchor.constraint(equalTo: viewUnderCityName.centerXAnchor).isActive = true
@@ -49,6 +50,7 @@ extension DetailViewController {
     }
 }
 
+// MARK: - DetaSource&Delegate
 extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 9

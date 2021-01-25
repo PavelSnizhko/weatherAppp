@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AE3C86CE25BDE6910011032B /* TemperatureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3C86CC25BDE6910011032B /* TemperatureCollectionViewCell.swift */; };
-		AE3C86CF25BDE6910011032B /* TemperatureCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE3C86CD25BDE6910011032B /* TemperatureCollectionViewCell.xib */; };
 		AE3C86D225BE09EE0011032B /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3C86D125BE09EE0011032B /* DetailViewController.swift */; };
+		AE6FBE9625BEBC2B009A4F83 /* DailyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6FBE9525BEBC2B009A4F83 /* DailyForecast.swift */; };
+		AE6FBE9D25BEC1EB009A4F83 /* ForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6FBE9B25BEC1EA009A4F83 /* ForecastCollectionViewCell.swift */; };
+		AE6FBE9E25BEC1EB009A4F83 /* ForecastCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE6FBE9C25BEC1EB009A4F83 /* ForecastCollectionViewCell.xib */; };
 		AE87131C25BEB7F4008226A4 /* DailyTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE87131B25BEB7F3008226A4 /* DailyTemperature.swift */; };
 		AE87131F25BEB81D008226A4 /* FeelsLikeTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE87131E25BEB81D008226A4 /* FeelsLikeTemperature.swift */; };
 		AE87132225BEB842008226A4 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE87132125BEB842008226A4 /* Forecast.swift */; };
@@ -31,9 +32,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AE3C86CC25BDE6910011032B /* TemperatureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureCollectionViewCell.swift; sourceTree = "<group>"; };
-		AE3C86CD25BDE6910011032B /* TemperatureCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TemperatureCollectionViewCell.xib; sourceTree = "<group>"; };
 		AE3C86D125BE09EE0011032B /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		AE6FBE9525BEBC2B009A4F83 /* DailyForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyForecast.swift; sourceTree = "<group>"; };
+		AE6FBE9B25BEC1EA009A4F83 /* ForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCollectionViewCell.swift; sourceTree = "<group>"; };
+		AE6FBE9C25BEC1EB009A4F83 /* ForecastCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForecastCollectionViewCell.xib; sourceTree = "<group>"; };
 		AE87131B25BEB7F3008226A4 /* DailyTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTemperature.swift; sourceTree = "<group>"; };
 		AE87131E25BEB81D008226A4 /* FeelsLikeTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelsLikeTemperature.swift; sourceTree = "<group>"; };
 		AE87132125BEB842008226A4 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				AE87131B25BEB7F3008226A4 /* DailyTemperature.swift */,
 				AE87131E25BEB81D008226A4 /* FeelsLikeTemperature.swift */,
 				AE87132125BEB842008226A4 /* Forecast.swift */,
+				AE6FBE9525BEBC2B009A4F83 /* DailyForecast.swift */,
 			);
 			path = Forecast;
 			sourceTree = "<group>";
@@ -113,9 +116,9 @@
 				AEC537DE25BC361A00BDE7A0 /* ViewController.swift */,
 				AEC5380425BD815E00BDE7A0 /* TemperatureViewCell.swift */,
 				AEC537E025BC361A00BDE7A0 /* Main.storyboard */,
+				AE6FBE9B25BEC1EA009A4F83 /* ForecastCollectionViewCell.swift */,
+				AE6FBE9C25BEC1EB009A4F83 /* ForecastCollectionViewCell.xib */,
 				AE3C86D125BE09EE0011032B /* DetailViewController.swift */,
-				AE3C86CC25BDE6910011032B /* TemperatureCollectionViewCell.swift */,
-				AE3C86CD25BDE6910011032B /* TemperatureCollectionViewCell.xib */,
 				AEC537E325BC362000BDE7A0 /* Assets.xcassets */,
 				AEC537E525BC362000BDE7A0 /* LaunchScreen.storyboard */,
 				AEC537E825BC362000BDE7A0 /* Info.plist */,
@@ -136,8 +139,8 @@
 		AEC537F825BC39B700BDE7A0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				AEC537F425BC39B200BDE7A0 /* City.swift */,
 				AEC537FD25BCA92B00BDE7A0 /* CitiesStorage.swift */,
+				AEC537F425BC39B200BDE7A0 /* City.swift */,
 				AE87133125BEB9D9008226A4 /* CurrentWeather */,
 				AE87132425BEB853008226A4 /* Forecast */,
 			);
@@ -202,8 +205,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEC537E725BC362000BDE7A0 /* LaunchScreen.storyboard in Resources */,
-				AE3C86CF25BDE6910011032B /* TemperatureCollectionViewCell.xib in Resources */,
 				AEC537E425BC362000BDE7A0 /* Assets.xcassets in Resources */,
+				AE6FBE9E25BEC1EB009A4F83 /* ForecastCollectionViewCell.xib in Resources */,
 				AEC537E225BC361A00BDE7A0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,10 +220,11 @@
 			files = (
 				AE3C86D225BE09EE0011032B /* DetailViewController.swift in Sources */,
 				AE87132925BEB93D008226A4 /* Clouds.swift in Sources */,
+				AE6FBE9625BEBC2B009A4F83 /* DailyForecast.swift in Sources */,
+				AE6FBE9D25BEC1EB009A4F83 /* ForecastCollectionViewCell.swift in Sources */,
 				AEC537F025BC398E00BDE7A0 /* NetworkManager.swift in Sources */,
 				AE87132225BEB842008226A4 /* Forecast.swift in Sources */,
 				AE87132F25BEB9B2008226A4 /* Weather.swift in Sources */,
-				AE3C86CE25BDE6910011032B /* TemperatureCollectionViewCell.swift in Sources */,
 				AEC537F525BC39B200BDE7A0 /* City.swift in Sources */,
 				AE87132625BEB915008226A4 /* CurrentWeatherList.swift in Sources */,
 				AE87132C25BEB973008226A4 /* Coordinates .swift in Sources */,

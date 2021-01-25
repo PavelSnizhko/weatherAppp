@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(citiesStorage)
         networkManager.getCurrentWeathers(by: citiesStorage.getCitiesId()) { [weak self]  result in
             switch result {
             case .success(let weathers):

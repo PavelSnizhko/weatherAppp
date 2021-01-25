@@ -17,9 +17,11 @@ enum NetworkingErrors: String, Error {
 
 class NetworkManager {
     enum Units: String {
-        case standard
-        case metric
-        case imperial
+        case standard, metric, imperial
+    }
+    
+    enum Exclude: String {
+        case minutely, hourly, daily, alerts, current
     }
     
     private let schema = "https"
@@ -103,19 +105,47 @@ class NetworkManager {
             }
         }.resume()
         
-//        func getDailyForecast(by coord: (Float, Float), complition () - >()) {
-//            var components = URLComponents()
-//            let citiesIdString = citiesId.map{"\($0)"}.joined(separator: ",")
-//            components.scheme = self.schema
-//            components.host = self.host
-//            components.path = "/data/2.5/group"
-//            components.queryItems = [
-//                URLQueryItem(name: "id", value: citiesIdString),
-//                URLQueryItem(name: "units", value: unit.rawValue),
-//                URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
-//            ]
-//            
-//        }
+    func getDailyForecast(by coord: (Float, Float), completion: @escaping (Result<Forecast, NetworkingErrors>) -> ()) {
+            var components = URLComponents()
+            let citiesIdString = citiesId.map{"\($0)"}.joined(separator: ",")
+            components.scheme = self.schema
+            components.host = self.host
+            components.path = "/data/2.5/onecall"
+            components.queryItems = [
+                URLQueryItem(name: "lat", value: "\(coord.0)"),
+                URLQueryItem(name: "lon", value: "\(coord.1)"),
+                URLQueryItem(name: "exclude", value: "\(Exclude.minutely), \(Exclude.hourly), \(Exclude.current), \(Exclude.alerts)"),
+                URLQueryItem(name: "units", value: unit.rawValue),
+                URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
+            ]
+            
+            var request = URLRequest(url: components.url!)
+            
+            request.httpMethod = "GET"
+            URLSession.shared.dataTask(with: request) {(data, response, error) in
+                if error == nil {
+                    let decoder = JSONDecoder()
+                    if let data = data {
+                        do {
+                            let currentWeathers = try decoder.decode(Forecast.self, from: data)
+                            DispatchQueue.main.async {
+                                completion(.success(currentWeathers))
+                            }
+                        } catch {
+                            DispatchQueue.main.async {
+                                completion(.failure(.ServerError))
+                            }
+                        }
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        completion(.failure(.ServerError))
+                    }
+                }
+            }.resume()
+            
+        }
     }
     
 }
