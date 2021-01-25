@@ -39,7 +39,7 @@ class NetworkManager {
             URLQueryItem(name: "units", value: unit.rawValue),
             URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
         ]
-        
+        print(components.url!)
         var request = URLRequest(url: components.url!)
         request.httpMethod = "GET"
         
@@ -47,13 +47,13 @@ class NetworkManager {
             if error == nil {
                 let decoder = JSONDecoder()
                 if let data = data {
-                    print(data)
                     do {
                         let currentWeather = try decoder.decode(CurrentWeather.self, from: data)
                         DispatchQueue.main.async {
                             completion(.success(currentWeather))
                         }
-                    } catch {
+                    } catch let someError{
+                        print(someError)
                         DispatchQueue.main.async {
                             completion(.failure(.ServerError))
                         }
@@ -104,23 +104,21 @@ class NetworkManager {
                 }
             }
         }.resume()
+    }
         
-    func getDailyForecast(by coord: (Float, Float), completion: @escaping (Result<Forecast, NetworkingErrors>) -> ()) {
+    func getDailyForecast(by coord: (Double, Double), completion: @escaping (Result<Forecast, NetworkingErrors>) -> ()) {
             var components = URLComponents()
-            let citiesIdString = citiesId.map{"\($0)"}.joined(separator: ",")
             components.scheme = self.schema
             components.host = self.host
             components.path = "/data/2.5/onecall"
             components.queryItems = [
-                URLQueryItem(name: "lat", value: "\(coord.0)"),
-                URLQueryItem(name: "lon", value: "\(coord.1)"),
+                URLQueryItem(name: "lon", value: "\(coord.0)"),
+                URLQueryItem(name: "lat", value: "\(coord.1)"),
                 URLQueryItem(name: "exclude", value: "\(Exclude.minutely), \(Exclude.hourly), \(Exclude.current), \(Exclude.alerts)"),
                 URLQueryItem(name: "units", value: unit.rawValue),
                 URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
             ]
-            
             var request = URLRequest(url: components.url!)
-            
             request.httpMethod = "GET"
             URLSession.shared.dataTask(with: request) {(data, response, error) in
                 if error == nil {
@@ -131,7 +129,8 @@ class NetworkManager {
                             DispatchQueue.main.async {
                                 completion(.success(currentWeathers))
                             }
-                        } catch {
+                        } catch let someError {
+                            print(someError)
                             DispatchQueue.main.async {
                                 completion(.failure(.ServerError))
                             }
@@ -144,8 +143,5 @@ class NetworkManager {
                     }
                 }
             }.resume()
-            
         }
-    }
-    
 }

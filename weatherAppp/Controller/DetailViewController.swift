@@ -9,6 +9,8 @@ import UIKit
 
 class DetailViewController: UIViewController {
     var currentWeather: CurrentWeather?
+    private let networkManager: NetworkManager = NetworkManager()
+    
     
     @IBOutlet weak var viewUnderCityName: UIView!
     @IBOutlet weak var cityNameLabel: UILabel!
@@ -16,7 +18,6 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         self.cityNameLabel.text = currentWeather?.cityName
-        
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
@@ -26,17 +27,16 @@ class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         setLabelConstraints()
     }
-    
 
-    /*
     
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let destination = segue.destination as? ForecastViewController {
+            if let weatherModel = self.currentWeather {
+                destination.coord = weatherModel.coord
+            }
+           
+        }
     }
-    */
 
 }
 

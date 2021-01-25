@@ -18,8 +18,10 @@ struct DailyForecast: Codable {
     let windDeg: Float
     let additionalWeather: [AdditionalWeather]
     let clouds: Int
-    let pop: Int
-    let rain: Float
+    let pop: Float
+    var rain: Float?
+    var snow: Float?
+    var windGust: Float?
     let uvi: Float
     
     enum CodingKeys: String, CodingKey {
@@ -29,7 +31,8 @@ struct DailyForecast: Codable {
         case windSpeed = "wind_speed"
         case windDeg = "wind_deg"
         case additionalWeather = "weather"
-        case pressure, humidity, clouds, pop, rain, uvi
+        case windGust = "wind_gust"
+        case pressure, humidity, clouds, pop, rain, uvi, snow
 
     }
 }
