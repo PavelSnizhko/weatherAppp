@@ -7,15 +7,14 @@
 
 import Foundation
 
-enum NetworkingErrors: String, Error {
-    case CityByNameError = "Something wrong with city data"
-    case ServerError = " The server has problem.Or posible you write wrong city name"
-}
-
-
-
-
-class NetworkManager {
+enum RequestsConstant: String {
+    case schema = "https"
+    case host = "api.openweathermap.org"
+    case currentWeathersPathForOneCity = "/data/2.5/weather"
+    case currentWeathersPathForGroupCities = "/data/2.5/group"
+    case dailyForecastPath = "/data/2.5/onecall"
+    case APIKey = "eb0db420f68bf3b425633d9d4070a0b4"
+    
     enum Units: String {
         case standard, metric, imperial
     }
@@ -23,125 +22,98 @@ class NetworkManager {
     enum Exclude: String {
         case minutely, hourly, daily, alerts, current
     }
-    
-    private let schema = "https"
-    private let host = "api.openweathermap.org"
-    private let unit = Units.metric
-    
-    
-    func getCurrentWeather(by cityName: String, completion: @escaping (Result<CurrentWeather, NetworkingErrors>) -> ()) {
-        var components = URLComponents()
-        components.scheme = self.schema
-        components.host = self.host
-        components.path = "/data/2.5/weather"
-        components.queryItems = [
-            URLQueryItem(name: "q", value: cityName),
-            URLQueryItem(name: "units", value: unit.rawValue),
-            URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
-        ]
-        print(components.url!)
-        var request = URLRequest(url: components.url!)
-        request.httpMethod = "GET"
         
+}
+
+enum NetworkingErrors: String, Error {
+    case cityByNameError = "Something wrong with city data"
+    case serverError = " The server has problem.Or posible you write wrong city name"
+    case badUrl = "Bad url"
+}
+
+
+class NetworkManager {
+    
+    private enum httpMethods: String {
+        case get = "GET"
+        case post = "POST"
+        case put = "PUT"
+        case delete = "DELETE"
+    }
+    
+    private var urlComponents: URLComponents {
+        var urlComponents = URLComponents()
+        urlComponents.scheme = RequestsConstant.schema.rawValue
+        urlComponents.host = RequestsConstant.host.rawValue
+        return urlComponents
+        
+    }
+    private let urlSession = URLSession.shared
+    
+
+    private func loadData<T: Codable>(pathToResources: RequestsConstant, parameters: [String: String], completion: @escaping (Result<T, NetworkingErrors>) -> ()) {
+        var urlComponents = self.urlComponents
+        urlComponents.path = pathToResources.rawValue
+        urlComponents.setQueryItems(with: parameters)
+        
+        guard let url = urlComponents.url else { return completion(.failure(.badUrl)) }
+        var request = URLRequest(url: url)
+        request.httpMethod = httpMethods.get.rawValue
         URLSession.shared.dataTask(with: request) {(data, response, error) in
             if error == nil {
                 let decoder = JSONDecoder()
                 if let data = data {
                     do {
-                        let currentWeather = try decoder.decode(CurrentWeather.self, from: data)
+                        let currentWeather = try decoder.decode(T.self, from: data)
                         DispatchQueue.main.async {
                             completion(.success(currentWeather))
                         }
-                    } catch let someError{
-                        print(someError)
-                        DispatchQueue.main.async {
-                            completion(.failure(.ServerError))
-                        }
-                    }
-                }
-            }
-            else {
-                DispatchQueue.main.async {
-                    completion(.failure(.ServerError))
-                }
-            }
-        }.resume()
-    }
-    
-    func getCurrentWeathers(by citiesId: [Int], completion: @escaping (Result<CurrentWeatherList, NetworkingErrors>) -> ()) {
-        var components = URLComponents()
-        let citiesIdString = citiesId.map{"\($0)"}.joined(separator: ",")
-        components.scheme = self.schema
-        components.host = self.host
-        components.path = "/data/2.5/group"
-        components.queryItems = [
-            URLQueryItem(name: "id", value: citiesIdString),
-            URLQueryItem(name: "units", value: unit.rawValue),
-            URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
-        ]
-        
-        var request = URLRequest(url: components.url!)
-        request.httpMethod = "GET"
-        URLSession.shared.dataTask(with: request) {(data, response, error) in
-            if error == nil {
-                let decoder = JSONDecoder()
-                if let data = data {
-                    do {
-                        let currentWeathers = try decoder.decode(CurrentWeatherList.self, from: data)
-                        DispatchQueue.main.async {
-                            completion(.success(currentWeathers))
-                        }
                     } catch {
                         DispatchQueue.main.async {
-                            completion(.failure(.ServerError))
+                            completion(.failure(.serverError))
                         }
                     }
                 }
             }
             else {
                 DispatchQueue.main.async {
-                    completion(.failure(.ServerError))
+                    completion(.failure(.serverError))
                 }
             }
         }.resume()
     }
+}
+
+
+
+extension NetworkManager {
+    
+    func getCurrentWeather(by cityName: String, unit: RequestsConstant.Units, completion: @escaping (Result<CurrentWeather, NetworkingErrors>) -> ()) {
         
-    func getDailyForecast(by coord: (Double, Double), completion: @escaping (Result<Forecast, NetworkingErrors>) -> ()) {
-            var components = URLComponents()
-            components.scheme = self.schema
-            components.host = self.host
-            components.path = "/data/2.5/onecall"
-            components.queryItems = [
-                URLQueryItem(name: "lon", value: "\(coord.0)"),
-                URLQueryItem(name: "lat", value: "\(coord.1)"),
-                URLQueryItem(name: "exclude", value: "\(Exclude.minutely), \(Exclude.hourly), \(Exclude.current), \(Exclude.alerts)"),
-                URLQueryItem(name: "units", value: unit.rawValue),
-                URLQueryItem(name: "appid", value: "eb0db420f68bf3b425633d9d4070a0b4")
-            ]
-            var request = URLRequest(url: components.url!)
-            request.httpMethod = "GET"
-            URLSession.shared.dataTask(with: request) {(data, response, error) in
-                if error == nil {
-                    let decoder = JSONDecoder()
-                    if let data = data {
-                        do {
-                            let currentWeathers = try decoder.decode(Forecast.self, from: data)
-                            DispatchQueue.main.async {
-                                completion(.success(currentWeathers))
-                            }
-                        } catch let someError {
-                            print(someError)
-                            DispatchQueue.main.async {
-                                completion(.failure(.ServerError))
-                            }
-                        }
-                    }
-                }
-                else {
-                    DispatchQueue.main.async {
-                        completion(.failure(.ServerError))
-                    }
-                }
-            }.resume()
-        }
+        let parameters = ["q": cityName, "units": unit.rawValue, "appid": RequestsConstant.APIKey.rawValue]
+        loadData(pathToResources: .currentWeathersPathForOneCity, parameters: parameters, completion: completion)
+    }
+    
+}
+
+
+
+extension NetworkManager {
+    
+    func getCurrentWeathers(by citiesId: [Int], unit: RequestsConstant.Units, completion: @escaping (Result<CurrentWeatherList, NetworkingErrors>) -> ()) {
+        let citiesIdString = citiesId.map{"\($0)"}.joined(separator: ",")
+        let parameters = ["id": citiesIdString, "units": unit.rawValue, "appid": RequestsConstant.APIKey.rawValue]
+        loadData(pathToResources: .currentWeathersPathForGroupCities, parameters: parameters, completion: completion)
+    }
+}
+
+
+extension NetworkManager {
+    
+    func getDailyForecast(by coord: (Double, Double), unit: RequestsConstant.Units, excludes: [RequestsConstant.Exclude], completion: @escaping (Result<Forecast, NetworkingErrors>) -> ()) {
+
+        let excludeString = excludes.map( { $0.rawValue }).joined(separator: ",")
+        let parameters = ["lon": "\(coord.0)", "lat": "\(coord.1)", "exclude": excludeString, "units": unit.rawValue, "appid": RequestsConstant.APIKey.rawValue]
+        loadData(pathToResources: .dailyForecastPath, parameters: parameters, completion: completion)
+    }
 }

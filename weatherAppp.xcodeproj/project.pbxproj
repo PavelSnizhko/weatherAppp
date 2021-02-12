@@ -31,6 +31,7 @@
 		AEC537F525BC39B200BDE7A0 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC537F425BC39B200BDE7A0 /* City.swift */; };
 		AEC537FE25BCA92D00BDE7A0 /* CitiesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC537FD25BCA92B00BDE7A0 /* CitiesStorage.swift */; };
 		AEC5380225BD4E4600BDE7A0 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC5380125BD4E4600BDE7A0 /* CurrentWeather.swift */; };
+		AEF4012325D6E57200783586 /* URLComponentsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF4012225D6E57200783586 /* URLComponentsExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		AEC537F425BC39B200BDE7A0 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		AEC537FD25BCA92B00BDE7A0 /* CitiesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesStorage.swift; sourceTree = "<group>"; };
 		AEC5380125BD4E4600BDE7A0 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
+		AEF4012225D6E57200783586 /* URLComponentsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLComponentsExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 				AEC537E825BC362000BDE7A0 /* Info.plist */,
 				AEC537F225BC399400BDE7A0 /* Manager */,
 				AEC537F825BC39B700BDE7A0 /* Model */,
+				AEF4012525D6E67D00783586 /* Extension */,
 			);
 			path = weatherAppp;
 			sourceTree = "<group>";
@@ -167,6 +170,14 @@
 				AE87132425BEB853008226A4 /* Forecast */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		AEF4012525D6E67D00783586 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				AEF4012225D6E57200783586 /* URLComponentsExtension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +271,7 @@
 				AE87131F25BEB81D008226A4 /* FeelsLikeTemperature.swift in Sources */,
 				AEC537DD25BC361A00BDE7A0 /* SceneDelegate.swift in Sources */,
 				AEC17ACC25BED0AF00B7DD9F /* ForecastViewController.swift in Sources */,
+				AEF4012325D6E57200783586 /* URLComponentsExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

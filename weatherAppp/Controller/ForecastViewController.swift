@@ -20,7 +20,7 @@ class ForecastViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let cityCoord = coord else { return }
-        networkManager.getDailyForecast(by: (cityCoord.lon, cityCoord.lat)) { [weak self]  result in
+        networkManager.getDailyForecast(by: (cityCoord.lon, cityCoord.lat), unit: .standard, excludes: [.minutely, .hourly, .current, .alerts ]) { [weak self]  result in
             switch result {
             case .success(let weathers):
                 self?.listOfDailyForecast = Array(weathers.daily[0..<4])

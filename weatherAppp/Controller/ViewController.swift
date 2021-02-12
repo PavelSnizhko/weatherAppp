@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        networkManager.getCurrentWeathers(by: citiesStorage.getCitiesId()) { [weak self]  result in
+        networkManager.getCurrentWeathers(by: citiesStorage.getCitiesId(), unit: .metric) { [weak self]  result in
             switch result {
             case .success(let weathers):
                 self?.currentWeathers = weathers.currentWeathers
@@ -50,7 +50,7 @@ extension ViewController {
         let save = UIAlertAction(title: "Save", style: .default) { (alertAction) in
             guard let textField = alert.textFields?[0] else { return }
             guard textField.text != "", let cityName = textField.text else { return }
-            self.networkManager.getCurrentWeather(by: cityName) {[weak self] result in
+            self.networkManager.getCurrentWeather(by: cityName, unit: .standard) {[weak self] result in
                 switch result {
                 case .success(let weather):
                     guard (try? self?.citiesStorage.addCity(city: City(from: weather))) != nil else { self?.makeErrorAllert(error: StorageError.cityAlreadyAdded.rawValue); return }
